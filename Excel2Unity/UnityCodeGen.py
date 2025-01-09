@@ -34,9 +34,9 @@ class UnityCodeGen:
         filecontent += "{\n"
 
         for index in fields:
-            fielddesc = table.cell(0, index).value
-            fieldtype = table.cell(2, index).value
-            fieldname = table.cell(3, index).value
+            fielddesc = table.columns.values.tolist()[index]#table.cell(0, index).value
+            fieldtype = table.iloc[1, index]#table.cell(2, index).value
+            fieldname = table.iloc[2, index]#table.cell(3, index).value
             fieldvar = FieldFormat.Type2format[fieldtype][1]
             filecontent += UnityCodeGen.Tab(1) + "public " + fieldvar + " " + fieldname + ";"
             filecontent += UnityCodeGen.Tab(1) + "//		" + fielddesc + "\n"
@@ -47,9 +47,9 @@ class UnityCodeGen:
         filecontent += UnityCodeGen.Tab(1) + "{\n"
 
         for index in fields:
-            fielddesc = table.cell(0, index).value
-            fieldtype = table.cell(2, index).value
-            fieldname = table.cell(3, index).value
+            fielddesc = table.columns.values.tolist()[index]#table.iloc[0, index]  # table.cell(0, index).value
+            fieldtype = table.iloc[1, index]  # table.cell(2, index).value
+            fieldname = table.iloc[2, index]  # table.cell(3, index).value
             fieldfunc = FieldFormat.Type2format[fieldtype][2]
             filecontent += UnityCodeGen.Tab(2) + fieldname + " = " + fieldfunc + ";\n"
 
@@ -80,7 +80,7 @@ class UnityCodeGen:
         # 获得keylist
         keylist = []
         for index in fields:
-            value = table.cell(4, index).value
+            value = table.iloc[3, index] #table.cell(4, index).value
             if value == KEY_MODIFIER_NAME:
                 keylist.append(index)
 
@@ -91,7 +91,7 @@ class UnityCodeGen:
         if uselist:
             filecontent += UnityCodeGen.Tab(1) + "private List<{0}> mList = new List<{0}>();\n".format(tableclassname)
         else:
-            fieldtype = table.cell(2, keylist[0]).value
+            fieldtype = table.iloc[1, keylist[0]] #table.cell(2, keylist[0]).value
             keytype = FieldFormat.Type2format[fieldtype][1]
             filecontent += UnityCodeGen.Tab(1) + "private Dictionary<{0}, {1}> mDict = new Dictionary<{0}, {1}>();\n".format(keytype, tableclassname)
 
@@ -119,7 +119,7 @@ class UnityCodeGen:
         if uselist:
             filecontent += UnityCodeGen.Tab(3) + "mList.Add(item);\n"
         else:
-            keyname = table.cell(3, keylist[0]).value
+            keyname = table.iloc[2, keylist[0]] #table.cell(3, keylist[0]).value
             filecontent += UnityCodeGen.Tab(3) + "if (mDict.ContainsKey(item.{0}))\n".format(keyname)
             filecontent += UnityCodeGen.Tab(3) + "{\n"
             filecontent += UnityCodeGen.Tab(4) + "mDict[item.{0}] = item;\n".format(keyname)
@@ -133,9 +133,9 @@ class UnityCodeGen:
 
         #  GetData函数
         if keylen == 1:     # 有一个key值使用dict取值
-            fieldtype = table.cell(2, keylist[0]).value
+            fieldtype = table.iloc[1, keylist[0]] #table.cell(2, keylist[0]).value
             keytype = FieldFormat.Type2format[fieldtype][1]
-            keyname = table.cell(3, keylist[0]).value
+            keyname = table.iloc[2, keylist[0]] #table.cell(3, keylist[0]).value
             filecontent += UnityCodeGen.Tab(1) + "\n"
             filecontent += UnityCodeGen.Tab(1) + "public {0} GetDataBy{1}({2} {3})\n".format(tableclassname, keyname, keytype, keyname.lower())
             filecontent += UnityCodeGen.Tab(1) + "{\n"
@@ -152,7 +152,7 @@ class UnityCodeGen:
 
             keycount = 0
             for keyindex in keylist:
-                keyval = table.cell(3, keyindex).value
+                keyval = table.iloc[2, keyindex] #table.cell(3, keyindex).value
                 filecontent += keyval
                 if keycount < (keylen - 1):
                     filecontent += "And"
@@ -162,9 +162,9 @@ class UnityCodeGen:
 
             keycount = 0
             for keyindex in keylist:
-                keytype = table.cell(2, keyindex).value
+                keytype = table.iloc[1, keyindex] #table.cell(2, keyindex).value
                 keytype = FieldFormat.Type2format[keytype][1]
-                keyval = table.cell(3, keyindex).value
+                keyval = table.iloc[2, keyindex] #table.cell(3, keyindex).value
                 keyval = keyval.lower()
                 filecontent += keytype + " " + keyval
                 if keycount < (keylen - 1):
@@ -179,7 +179,7 @@ class UnityCodeGen:
             filecontent += UnityCodeGen.Tab(3) + "if ("
             keycount = 0
             for keyindex in keylist:
-                keyval1 = table.cell(3, keyindex).value
+                keyval1 = table.iloc[2, keyindex] #table.cell(3, keyindex).value
                 keyval2 = keyval1.lower()
                 filecontent += "data." + keyval1 + " == " + keyval2
                 if keycount < (keylen - 1):

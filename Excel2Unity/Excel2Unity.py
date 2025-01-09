@@ -1,6 +1,7 @@
 
 import os
-import xlrd
+# import xlrd
+import pandas
 from Config import EXCEL_DIR
 from Config import EXCEL_EXT
 from Config import UNITY_TABLE_FIELD_FILTER
@@ -36,8 +37,9 @@ class Excel2Unity:
 
         # 处理每个文件
         for filename in self.mExcelFiles:
-            data = xlrd.open_workbook(filename)
-            table = data.sheets()[0]
+            # data = xlrd.open_workbook(filename)
+            data = pandas.read_excel(filename, engine='openpyxl')
+            table = data #.sheets()[0]
             fields = self.FilterFieldData(table, UNITY_TABLE_FIELD_FILTER)
 
             # 数据
@@ -54,10 +56,16 @@ class Excel2Unity:
     # 筛选字段数据
     def FilterFieldData(self, table, fieldfilter):
         fields = []
-        for index in range(table.ncols):
-            row = table.cell(1, index).value
+        columns = table.loc[0].values.tolist()
+        for idx, col in enumerate(columns):
             for field in fieldfilter:
-                if row == field:
-                    fields.append(index)
+                if col == field:
+                    fields.append(idx)
+
+        # for index in range(table.ncols):
+        #     row = table.cell(1, index).value
+        #     for field in fieldfilter:
+        #         if row == field:
+        #             fields.append(index)
 
         return fields

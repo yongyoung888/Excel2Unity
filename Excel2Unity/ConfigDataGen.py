@@ -50,15 +50,24 @@ class ConfigDataGen:
         allbytes = bytes()
 
         count = 0
-        for row in range(5, table.nrows):
-            count += 1
 
-            for col in range(table.ncols):
-                if col in fields:
-                    val = table.cell(row, col).value
-                    type = table.cell(2, col).value
-                    format = FieldFormat.Type2format[type][0]
-                    allbytes += ConfigDataGen.Encode2Bytes(format, val)
+        for index, row in table.iterrows():
+            count += 1
+            if count > 4:
+                for idx, col in enumerate(row):
+                    if idx in fields:
+                        type = table.iloc[1, idx]
+                        format = FieldFormat.Type2format[type][0]
+                        allbytes += ConfigDataGen.Encode2Bytes(format, col)
+        # for row in range(5, table.nrows):
+        #     count += 1
+        #
+        #     for col in range(table.ncols):
+        #         if col in fields:
+        #             val = table.cell(row, col).value
+        #             type = table.cell(2, col).value
+        #             format = FieldFormat.Type2format[type][0]
+        #             allbytes += ConfigDataGen.Encode2Bytes(format, val)
                           
         outbytes = struct.pack('i', count)
         outbytes += allbytes

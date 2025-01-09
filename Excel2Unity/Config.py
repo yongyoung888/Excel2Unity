@@ -4,7 +4,7 @@
 EXCEL_DIR = "./Excel"
 
 # excel文件的后缀
-EXCEL_EXT = ".xls"
+EXCEL_EXT = ".xlsx"
 
 # unity表格字段的过滤
 UNITY_TABLE_FIELD_FILTER = ["cs", "c", "CS", "C"]
