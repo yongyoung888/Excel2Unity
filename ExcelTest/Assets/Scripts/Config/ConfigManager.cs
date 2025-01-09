@@ -12,9 +12,8 @@ public class ConfigManager
 {
     private static void Deserialize(DynamicPacket dynamicPacket)
     {
-        Test1CfgMgr.Instance.Deserialize(dynamicPacket);
+        chatCfgMgr.Instance.Deserialize(dynamicPacket);
         Test2CfgMgr.Instance.Deserialize(dynamicPacket);
-        Test3CfgMgr.Instance.Deserialize(dynamicPacket);
     }
     
     public static void LoadConfig(string cfgdatapath)
