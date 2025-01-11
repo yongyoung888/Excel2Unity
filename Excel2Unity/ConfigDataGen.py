@@ -32,7 +32,7 @@ class ConfigDataGen:
         elif format == "?":
             bytes = struct.pack(format, bool(val))
         elif format == "s":
-            newval = val.encode()
+            newval = str(val).encode()
             vallen = len(newval)
             lenbyte = struct.pack("i", vallen)
 
@@ -50,10 +50,12 @@ class ConfigDataGen:
         allbytes = bytes()
 
         count = 0
+        realCount = 0
 
         for index, row in table.iterrows():
             count += 1
             if count > 4:
+                realCount += 1
                 for idx, col in enumerate(row):
                     if idx in fields:
                         type = table.iloc[1, idx]
@@ -69,7 +71,7 @@ class ConfigDataGen:
         #             format = FieldFormat.Type2format[type][0]
         #             allbytes += ConfigDataGen.Encode2Bytes(format, val)
                           
-        outbytes = struct.pack('i', count)
+        outbytes = struct.pack('i', realCount)
         outbytes += allbytes
 
         return outbytes

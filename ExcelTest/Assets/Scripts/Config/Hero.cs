@@ -68,9 +68,9 @@ public class HeroCfgMgr
     
     public HeroCfg GetDataByID(int id)
     {
-        if(mDict.ContainsKey(id))
+        if(mDict.TryGetValue(id, out var heroCfg))
         {
-            return mDict[id];
+            return heroCfg;
         }
         
         return null;

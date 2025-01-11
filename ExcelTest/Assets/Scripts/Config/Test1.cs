@@ -88,9 +88,9 @@ public class Test1CfgMgr
     
     public Test1Cfg GetDataByID(int id)
     {
-        if(mDict.ContainsKey(id))
+        if(mDict.TryGetValue(id, out var test1Cfg))
         {
-            return mDict[id];
+            return test1Cfg;
         }
         
         return null;

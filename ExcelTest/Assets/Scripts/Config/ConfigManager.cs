@@ -12,6 +12,7 @@ public class ConfigManager
 {
     private static void Deserialize(DynamicPacket dynamicPacket)
     {
+        ChatCfgMgr.Instance.Deserialize(dynamicPacket);
         HeroCfgMgr.Instance.Deserialize(dynamicPacket);
         Test1CfgMgr.Instance.Deserialize(dynamicPacket);
     }

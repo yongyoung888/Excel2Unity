@@ -8,12 +8,12 @@ using System.IO;
 using System.Text;
 using UnityEngine;
 
-public class chatCfg
+public class ChatCfg
 {
-    public int id;    //		
+    public int id;    //		Unnamed: 0
     public List<int> rewards;    //		奖励物品，JSON
     public string sceanid;    //		场景图片地址
-    public string description;    //		
+    public string description;    //		Unnamed: 3
 
     public void Deserialize (DynamicPacket packet)
     {
@@ -24,26 +24,26 @@ public class chatCfg
     }
 }
 
-public class chatCfgMgr
+public class ChatCfgMgr
 {
-    private static chatCfgMgr mInstance;
+    private static ChatCfgMgr mInstance;
     
-    public static chatCfgMgr Instance
+    public static ChatCfgMgr Instance
     {
         get
         {
             if (mInstance == null)
             {
-                mInstance = new chatCfgMgr();
+                mInstance = new ChatCfgMgr();
             }
             
             return mInstance;
         }
     }
 
-    private Dictionary<int, chatCfg> mDict = new Dictionary<int, chatCfg>();
+    private Dictionary<int, ChatCfg> mDict = new Dictionary<int, ChatCfg>();
     
-    public Dictionary<int, chatCfg> Dict
+    public Dictionary<int, ChatCfg> Dict
     {
         get {return mDict;}
     }
@@ -53,7 +53,7 @@ public class chatCfgMgr
         int num = (int)packet.PackReadInt32();
         for (int i = 0; i < num; i++)
         {
-            chatCfg item = new chatCfg();
+            ChatCfg item = new ChatCfg();
             item.Deserialize(packet);
             if (mDict.ContainsKey(item.id))
             {
@@ -66,11 +66,11 @@ public class chatCfgMgr
         }
     }
     
-    public chatCfg GetDataByid(int id)
+    public ChatCfg GetDataByid(int id)
     {
-        if(mDict.ContainsKey(id))
+        if(mDict.TryGetValue(id, out var chatCfg))
         {
-            return mDict[id];
+            return chatCfg;
         }
         
         return null;
